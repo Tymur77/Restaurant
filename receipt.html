@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                <title>Receipt</title>
+                    <style>
+                        .receipt {
+                            width: 300px;
+                            text-align: center;
+                            border: 1px solid #000;
+                            padding: 10px;
+                            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                        }
+                        .logo {
+                            width: 50px;
+                            height: 50px;
+                            margin: 0 auto;
+                        }
+                        .logo img {
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
+                        .total, .item-total {
+                            text-align: right;
+                        }
+                        .item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-end;
+                            width: 100%;
+                        }
+                        .divider {
+                            border-top: 1px dashed #000;
+                            margin: 10px 0;
+                        }
+                        .item div p {
+                            text-align: left;
+                        }
+                    </style>
+    </head>
+    <body>
+        
+        <div class="receipt" id="receipt">
+            <div class="logo">
+                <img src="logo.png" alt="Restaurant Logo">
+            </div>
+            <h4>Yeseniia's вкусовой оазис</h4>
+            <p>Официант: Ксения-Есения</p>
+            <div id="receiptItems">
+<!--                <div class="item">-->
+<!--                    <div>-->
+<!--                        <p>Чаевые</p>-->
+<!--                        <p>1x50 грн.=</p>-->
+<!--                    </div>-->
+<!--                    <p class="item-total">50 грн.</p>-->
+<!--                </div>-->
+            </div>
+            <div class="divider"></div>
+            <div class="item">
+                <p>Всего</p>
+                <p id="totalAmount" class="total">0 грн.</p>
+            </div>
+            <p id="currentDateTime"></p>
+            <p>Слава Україні!</p>
+        </div>
+        
+        <script>
+            const receiptItems = {};
+            const receiptElement = document.getElementById('receiptItems');
+            const totalAmountElement = document.getElementById('totalAmount');
+            
+            function updateReceipt() {
+                receiptElement.innerHTML = '';
+                let total = 0;
+                
+                for (let [dish, { price, quantity }] of Object.entries(receiptItems)) {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    itemElement.innerHTML = `<div><p>${dish}</p><p>${quantity}x${price} грн.=</p></div><p class="item-total">${price * quantity} грн.</p>`;
+                    receiptElement.appendChild(itemElement);
+                    total += price * quantity;
+                }
+                
+                totalAmountElement.textContent = `${total} грн.`;
+            }
+            
+            const dishes = {
+                dish1: {dish: 'Чай', price: 98},
+                dish2: {dish: 'Кофе', price: 98},
+                dish3: {dish: 'Смузи', price: 105},
+                dish4: {dish: 'Яблочный сок', price: 55},
+                dish5: {dish: 'Абрикосовый сок', price: 55},
+                dish6: {dish: 'Апельсиновый сок', price: 55},
+                dish7: {dish: 'Кола', price: 100},
+                dish8: {dish: 'Вода', price: 35},
+                dish10: {dish: 'Борщ', price: 150},
+                dish11: {dish: 'Бульон', price: 130},
+                dish13: {dish: 'Стейк', price: 95},
+                dish14: {dish: 'Малая курица', price: 50},
+                dish15: {dish: 'Большая курица', price: 100},
+                dish16: {dish: 'Яичница с беконом', price: 105},
+                dish18: {dish: 'Салат Цезарь', price: 125},
+                dish19: {dish: 'Стандартный салат', price: 99},
+                dish20: {dish: 'Сырный салат', price: 107},
+                dish22: {dish: 'Картошка Фри', price: 50},
+                dish23: {dish: 'Картошка по-сельски', price: 50},
+                dish24: {dish: 'Гамбургер', price: 200},
+                dish25: {dish: 'Чизбургер', price: 205},
+                dish26: {dish: 'Дабл чизбургер', price: 399},
+                dish27: {dish: 'Биг Мак', price: 250},
+                dish28: {dish: 'Мак Чикен', price: 235},
+                dish29: {dish: 'Филе-О-Фиш', price: 235},
+                dish30: {dish: 'Пицца', price: 99},
+                dish32: {dish: 'Вафли', price: 100},
+                dish33: {dish: 'Круассан', price: 89},
+                dish34: {dish: 'Шоколадное мороженое', price: 95},
+                dish35: {dish: 'Клубничное мороженое', price: 95},
+                dish36: {dish: 'Лимонное мороженое', price: 95},
+                dish37: {dish: 'Малиновое мороженое', price: 95},
+                dish38: {dish: 'Фисташковое мороженое', price: 95},
+                dish39: {dish: 'Мороженое пломбир', price: 95},
+                dish40: {dish: 'Клубничный торт', price: 205},
+            };
+            
+            const params = new URLSearchParams(window.location.search);
+            
+            params.forEach((value, key) => {
+                const dish = dishes[key].dish;
+                const price = dishes[key].price;
+                const qt = parseInt(value);
+                receiptItems[dish] = { price, quantity: qt };
+            });
+            
+            updateReceipt();
+        </script>
+        
+        <script>
+            // Function to format the current date and time
+            function getCurrentDateTime() {
+                const now = new Date();
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+                return now.toLocaleDateString(undefined, options).replace(",", "");
+            }
+
+            // Insert the current date and time into the receipt
+            document.getElementById('currentDateTime').innerText = getCurrentDateTime();
+        </script>
+        
+    </body>
+</html>
+
