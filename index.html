@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                <title>Restaurant Menu</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                        }
+                        .categories {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            justify-content: start;
+                            align-items: flex-start;
+                        }
+                        .category {
+                            flex: 1 1 calc(33.33% - 40px);
+                            max-width: calc(33.33% - 40px);
+                            text-align: center;
+                            cursor: pointer;
+                        }
+                        .category-content {
+                            display: none;
+                            margin: 0px 20px 0px 20px;
+                            border: 1px solid #000;
+                            border-bottom-left-radius: 5px;
+                            border-bottom-right-radius: 5px;
+                            padding: 10px 10px 0px 10px;
+                            background-color: white;
+                        }
+                        .dish-item {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 5px 0;
+                        }
+                        .dish-item span {
+                            margin-right: 10px;
+                        }
+                        .buttons {
+                            display: flex;
+                            gap: 5px;
+                        }
+                        @media (max-width: 600px) {
+                            .category {
+                                flex: 1 1 100%;
+                                max-width: 100%;
+                            }
+                        }
+                        
+                        label {
+                            padding: 10px;
+                            border-radius: 5px;
+                            display: block;
+                        }
+                        .add {
+                            background-image: url('plus.png');
+                        }
+                        .remove {
+                            background-image: url('minus.png');
+                        }
+                        .buttons button {
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            border: 0px;
+                            padding: 0px;
+                            width: 24px;
+                            height: 24px;
+                            background-color: white;
+                        }
+                        
+                        html, body {
+                            touch-action: manipulation;
+                        }
+                        
+                        .downloadReceiptButton {
+                            margin-top: 35px;
+                        }
+                    </style>
+                    
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+                    <style>
+                        .receipt {
+                            width: 300px;
+                            text-align: center;
+                            border: 1px solid #000;
+                            padding: 10px;
+                            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                            margin-top: 50px;
+                        }
+                        .logo {
+                            width: 50px;
+                            height: 50px;
+                            margin: 0 auto;
+                        }
+                        .logo img {
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
+                        .total, .item-total {
+                            text-align: right;
+                        }
+                        .item {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-end;
+                            width: 100%;
+                        }
+                        .divider {
+                            border-top: 1px dashed #000;
+                            margin: 10px 0;
+                        }
+                        .item div p {
+                            text-align: left;
+                        }
+                    </style>
+    </head>
+    <body>
+        
+        <div class="categories">
+            
+            <div class="category" data-category="1">
+                <label style="background-color: #aef359;">Напитки</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'>
+                        <span>Чай</span>
+                        <div class='buttons'>
+                            <button class='add' data-dish='Чай' data-price='98'>
+                            </button><button class='remove' data-dish='Чай'></button>
+                        </div>
+                    </div>
+                    
+                    <div class='dish-item'><span>Кофе</span><div class='buttons'><button class='add' data-dish='Кофе' data-price='98'></button><button class='remove' data-dish='Кофе'></button></div></div>
+                    <div class='dish-item'><span>Смузи</span><div class='buttons'><button class='add' data-dish='Смузи' data-price='105'></button><button class='remove' data-dish='Смузи'></button></div></div>
+                    <div class='dish-item'><span>Яблочный сок</span><div class='buttons'><button class='add' data-dish='Яблочный сок' data-price='55'></button><button class='remove' data-dish='Яблочный сок'></button></div></div>
+                    <div class='dish-item'><span>Абрикосовый сок</span><div class='buttons'><button class='add' data-dish='Абрикосовый сок' data-price='55'></button><button class='remove' data-dish='Абрикосовый сок'></button></div></div>
+                    <div class='dish-item'><span>Апельсиновый сок</span><div class='buttons'><button class='add' data-dish='Апельсиновый сок' data-price='55'></button><button class='remove' data-dish='Апельсиновый сок'></button></div></div>
+                    <div class='dish-item'><span>Кола</span><div class='buttons'><button class='add' data-dish='Кола' data-price='100'></button><button class='remove' data-dish='Кола'></button></div></div>
+                    <div class='dish-item'><span>Вода</span><div class='buttons'><button class='add' data-dish='Вода' data-price='35'></button><button class='remove' data-dish='Вода'></button></div></div>
+
+                </div>
+            </div>
+            
+            <div class="category" data-category="2">
+                <label style="background-color: #bc544b;">Супы</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'><span>Борщ</span><div class='buttons'><button class='add' data-dish='Борщ' data-price='150'></button><button class='remove' data-dish='Борщ'></button></div></div>
+                    <div class='dish-item'><span>Бульон</span><div class='buttons'><button class='add' data-dish='Бульон' data-price='130'></button><button class='remove' data-dish='Бульон'></button></div></div>
+
+                </div>
+            </div>
+            
+            <div class="category" data-category="3">
+                <label style="background-color: #80471c;">Мясо</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'><span>Стейк</span><div class='buttons'><button class='add' data-dish='Стейк' data-price='95'></button><button class='remove' data-dish='Стейк'></button></div></div>
+                    <div class='dish-item'><span>Малая курица</span><div class='buttons'><button class='add' data-dish='Малая курица' data-price='50'></button><button class='remove' data-dish='Малая курица'></button></div></div>
+                    <div class='dish-item'><span>Большая курица</span><div class='buttons'><button class='add' data-dish='Большая курица' data-price='100'></button><button class='remove' data-dish='Большая курица'></button></div></div>
+                    <div class='dish-item'><span>Яичница с беконом</span><div class='buttons'><button class='add' data-dish='Яичница с беконом' data-price='105'></button><button class='remove' data-dish='Яичница с беконом'></button></div></div>
+
+                </div>
+            </div>
+            
+            <div class="category" data-category="4">
+                <label style="background-color: #3cb043;">Салаты</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'><span>Салат Цезарь</span><div class='buttons'><button class='add' data-dish='Салат Цезарь' data-price='125'></button><button class='remove' data-dish='Салат Цезарь'></button></div></div>
+                    <div class='dish-item'><span>Стандартный салат</span><div class='buttons'><button class='add' data-dish='Стандартный салат' data-price='99'></button><button class='remove' data-dish='Стандартный салат'></button></div></div>
+                    <div class='dish-item'><span>Сырный салат</span><div class='buttons'><button class='add' data-dish='Сырный салат' data-price='107'></button><button class='remove' data-dish='Сырный салат'></button></div></div>
+
+                </div>
+            </div>
+            
+            <div class="category" data-category="5">
+                <label style="background-color: #fedc56;">Fast Food</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'><span>Картошка Фри</span><div class='buttons'><button class='add' data-dish='Картошка Фри' data-price='50'></button><button class='remove' data-dish='Картошка Фри'></button></div></div>
+                    <div class='dish-item'><span>Картошка по-сельски</span><div class='buttons'><button class='add' data-dish='Картошка по-сельски' data-price='50'></button><button class='remove' data-dish='Картошка по-сельски'></button></div></div>
+                    <div class='dish-item'><span>Гамбургер</span><div class='buttons'><button class='add' data-dish='Гамбургер' data-price='200'></button><button class='remove' data-dish='Гамбургер'></button></div></div>
+                    <div class='dish-item'><span>Чизбургер</span><div class='buttons'><button class='add' data-dish='Чизбургер' data-price='205'></button><button class='remove' data-dish='Чизбургер'></button></div></div>
+                    <div class='dish-item'><span>Дабл чизбургер</span><div class='buttons'><button class='add' data-dish='Дабл чизбургер' data-price='399'></button><button class='remove' data-dish='Дабл чизбургер'></button></div></div>
+                    <div class='dish-item'><span>Биг Мак</span><div class='buttons'><button class='add' data-dish='Биг Мак' data-price='250'></button><button class='remove' data-dish='Биг Мак'></button></div></div>
+                    <div class='dish-item'><span>Мак Чикен</span><div class='buttons'><button class='add' data-dish='Мак Чикен' data-price='235'></button><button class='remove' data-dish='Мак Чикен'></button></div></div>
+                    <div class='dish-item'><span>Филе-О-Фиш</span><div class='buttons'><button class='add' data-dish='Филе-О-Фиш' data-price='235'></button><button class='remove' data-dish='Филе-О-Фиш'></button></div></div>
+                    <div class='dish-item'><span>Пицца</span><div class='buttons'><button class='add' data-dish='Пицца' data-price='99'></button><button class='remove' data-dish='Пицца'></button></div></div>
+
+                </div>
+            </div>
+            
+            <div class="category" data-category="6">
+                <label style="background-color: #0492c2;">Десерты</label>
+                <div class="category-content">
+                    
+                    <div class='dish-item'><span>Вафли</span><div class='buttons'><button class='add' data-dish='Вафли' data-price='100'></button><button class='remove' data-dish='Вафли'></button></div></div>
+                    <div class='dish-item'><span>Круассан</span><div class='buttons'><button class='add' data-dish='Круассан' data-price='89'></button><button class='remove' data-dish='Круассан'></button></div></div>
+                    <div class='dish-item'><span>Шоколадное мороженое</span><div class='buttons'><button class='add' data-dish='Шоколадное мороженое' data-price='95'></button><button class='remove' data-dish='Шоколадное мороженое'></button></div></div>
+                    <div class='dish-item'><span>Клубничное мороженое</span><div class='buttons'><button class='add' data-dish='Клубничное мороженое' data-price='95'></button><button class='remove' data-dish='Клубничное мороженое'></button></div></div>
+                    <div class='dish-item'><span>Лимонное мороженое</span><div class='buttons'><button class='add' data-dish='Лимонное мороженое' data-price='95'></button><button class='remove' data-dish='Лимонное мороженое'></button></div></div>
+                    <div class='dish-item'><span>Малиновое мороженое</span><div class='buttons'><button class='add' data-dish='Малиновое мороженое' data-price='95'></button><button class='remove' data-dish='Малиновое мороженое'></button></div></div>
+                    <div class='dish-item'><span>Фисташковое мороженое</span><div class='buttons'><button class='add' data-dish='Фисташковое мороженое' data-price='95'></button><button class='remove' data-dish='Фисташковое мороженое'></button></div></div>
+                    <div class='dish-item'><span>Мороженое пломбир</span><div class='buttons'><button class='add' data-dish='Мороженое пломбир' data-price='95'></button><button class='remove' data-dish='Мороженое пломбир'></button></div></div>
+                    <div class='dish-item'><span>Клубничный торт</span><div class='buttons'><button class='add' data-dish='Клубничный торт' data-price='205'></button><button class='remove' data-dish='Клубничный торт'></button></div></div>
+
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="receipt" id="receipt">
+            <div class="logo">
+                <img src="logo.png" alt="Restaurant Logo">
+            </div>
+            <h4>Yeseniia's вкусовой оазис</h4>
+            <p>Официант: Ксения-Есения</p>
+            <div id="receiptItems">
+<!--                <div class="item">-->
+<!--                    <div>-->
+<!--                        <p>Чаевые</p>-->
+<!--                        <p>1x50 грн.=</p>-->
+<!--                    </div>-->
+<!--                    <p class="item-total">50 грн.</p>-->
+<!--                </div>-->
+            </div>
+            <div class="divider"></div>
+            <div class="item">
+                <p>Всего</p>
+                <p id="totalAmount" class="total">0 грн.</p>
+            </div>
+            <p id="currentDateTime"></p>
+            <p>Слава Україні!</p>
+        </div>
+        
+        <button onclick="downloadReceipt()" class="downloadReceiptButton">Загрузить чек</button>
+        
+        <script>
+            document.querySelectorAll('.category').forEach(category => {
+                category.addEventListener('click', function () {
+                    document.querySelectorAll('.category').forEach(cat => {
+                        if (cat !== category) {
+                            cat.classList.remove('active');
+                            cat.querySelector('.category-content').style.display = 'none';
+                        }
+                    });
+                    category.classList.toggle('active');
+                    const content = category.querySelector('.category-content');
+                    if (category.classList.contains('active')) {
+                        content.style.display = 'block';
+                    } else {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+            
+            const receiptItems = {};
+            const receiptElement = document.getElementById('receiptItems');
+            const totalAmountElement = document.getElementById('totalAmount');
+            
+            function updateReceipt() {
+                receiptElement.innerHTML = '';
+                let total = 0;
+                
+                for (let [dish, { price, quantity }] of Object.entries(receiptItems)) {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    itemElement.innerHTML = `<div><p>${dish}</p><p>${quantity}x${price} грн.=</p></div><p class="item-total">${price * quantity} грн.</p>`;
+                    receiptElement.appendChild(itemElement);
+                    total += price * quantity;
+                }
+                
+                totalAmountElement.textContent = `${total} грн.`;
+            }
+            
+            document.querySelectorAll('.add').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const dish = this.getAttribute('data-dish');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    if (receiptItems[dish]) {
+                        receiptItems[dish].quantity++;
+                    } else {
+                        receiptItems[dish] = { price, quantity: 1 };
+                    }
+                    
+                    updateReceipt();
+                });
+            });
+            
+            document.querySelectorAll('.remove').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const dish = this.getAttribute('data-dish');
+                    
+                    if (receiptItems[dish] && receiptItems[dish].quantity > 0) {
+                        receiptItems[dish].quantity--;
+                        if (receiptItems[dish].quantity === 0) {
+                            delete receiptItems[dish];
+                        }
+                        updateReceipt();
+                    }
+                });
+            });
+        </script>
+        
+        <script>
+            // Function to format the current date and time
+            function getCurrentDateTime() {
+                const now = new Date();
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+                return now.toLocaleDateString(undefined, options).replace(",", "");
+            }
+
+            // Insert the current date and time into the receipt
+            document.getElementById('currentDateTime').innerText = getCurrentDateTime();
+        </script>
+
+        <script>
+            async function downloadReceipt() {
+                const receiptElement = document.getElementById('receipt');
+                
+                // Use html2canvas to capture the receipt as an image
+                html2canvas(receiptElement).then(async (canvas) => {
+                    canvas.toBlob(async (blob) => {
+                        filename = "Ресторан Чек за " + getCurrentDateTime() + ".png";
+                        const file = new File([blob], filename, { type: "image/png" });
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    });
+                });
+            }
+        </script>
+        
+    </body>
+</html>
+
